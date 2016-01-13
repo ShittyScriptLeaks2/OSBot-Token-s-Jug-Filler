@@ -8,6 +8,9 @@ import java.net.URL;
 
 public final class Constants {
 
+    private Constants() {
+    }
+
     public static final Area BANK_AREA = new Area(3250, 3423, 3257, 3419);
     public static final Area FOUNTAIN_AREA = new Area(3240, 3433, 3237, 3436);
     public static final Position[] POTENTIAL_BANK_DESTINATIONS = new Position[]{
@@ -34,9 +37,6 @@ public final class Constants {
             new Position(3239, 3430, 0),
             new Position(3236, 3433, 0)
     };
-
-    private Constants() {
-    }
 
     public static BufferedImage imageFromURL(String url) throws IOException {
         return ImageIO.read(new URL(url));

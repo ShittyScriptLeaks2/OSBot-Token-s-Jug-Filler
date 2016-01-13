@@ -10,15 +10,15 @@ public class WalkToFountainState extends State {
     }
 
     @Override
-    public boolean execute() throws InterruptedException {
-        this.core.localWalker.walk(Constants.POTENTIAL_FOUNTAIN_DESTINATIONS[Core.random(0, 6)]);
-        this.core.isFillingJugs = false;
-        return true;
+    public boolean readyForExecution() throws InterruptedException {
+        return core.inventory.contains("Jug") && !Constants.FOUNTAIN_AREA.contains(core.myPlayer()) && !core.myPlayer().isMoving();
     }
 
     @Override
-    public boolean readyForExecution() throws InterruptedException {
-        return this.core.inventory.contains("Jug") && !Constants.FOUNTAIN_AREA.contains(this.core.myPlayer()) && !this.core.myPlayer().isMoving();
+    public boolean execute() throws InterruptedException {
+        core.localWalker.walk(Constants.POTENTIAL_FOUNTAIN_DESTINATIONS[Core.random(0, 6)]);
+        core.isFillingJugs = false;
+        return true;
     }
 
     @Override

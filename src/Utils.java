@@ -3,73 +3,63 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-// I'm.. not going to refactor this..
 public final class Utils {
 
-    public static int getBuyingPrice(final int a) throws IOException {
+    public static int getBuyingPrice(int a) throws IOException {
         return getGEPrice(a, "buying");
     }
 
-    public static int getSellingPrice(final int a) throws IOException {
+    public static int getSellingPrice(int a) throws IOException {
         return getGEPrice(a, "selling");
     }
 
-    private static int getGEPrice(final int itemId, final String type) throws IOException {
-        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL(new StringBuilder().insert(0, "https://api.rsbuddy.com/grandExchange?a=guidePrice&i=").append(itemId).toString()).openStream()));
-        String trim = null;
-        Label_0050:
-        while (true) {
-            BufferedReader bufferedReader2 = bufferedReader;
-            String line;
-            while ((line = bufferedReader2.readLine()) != null) {
-                if (!line.contains("{")) {
-                    continue Label_0050;
-                }
-                trim = line.trim();
-                bufferedReader2 = bufferedReader;
+    private static int getGEPrice(int itemId, String type) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new URL("https://api.rsbuddy.com/grandExchange?a=guidePrice&i=" + itemId).openStream()));
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (!line.contains("{")) {
+                continue;
             }
+
+            line = line.trim();
             break;
         }
 
-        String s;
-        BufferedReader bufferedReader3;
-        if (type.equals("buying")) {
-            final int n = trim.indexOf(",") + 10;
-            final String a2 = trim;
-            s = a2.substring(n, m(a2, ',', 1)).trim();
-            bufferedReader3 = bufferedReader;
-        } else {
-            final boolean equals = type.equals("selling");
-            final String s2 = trim;
-            if (equals) {
-                s = s2.substring(m(trim, ',', 2) + 11, trim.indexOf("sellingQuantity") - 2).trim();
-                bufferedReader3 = bufferedReader;
-            } else {
-                s = s2.substring(trim.indexOf(":") + 1, trim.indexOf(",")).trim();
-                bufferedReader3 = bufferedReader;
-            }
+        String priceString;
+        switch (type) {
+            case "buying":
+                int idx = line.indexOf(",") + 10;
+                priceString = line.substring(idx, lastIndexOf(line, ',', 1)).trim();
+                break;
+            case "selling":
+                priceString = line.substring(lastIndexOf(line, ',', 2) + 11, line.indexOf("sellingQuantity") - 2).trim();
+                break;
+            default:
+                priceString = line.substring(line.indexOf(":") + 1, line.indexOf(",")).trim();
+                break;
         }
-        bufferedReader3.close();
-        return Integer.parseInt(s);
+
+        br.close();
+        return Integer.parseInt(priceString);
     }
 
-    private static int m(String a, char a1, int a2) {
-        int var3 = a.indexOf(a1, 0);
-        int var10000 = a2;
+    private static int lastIndexOf(String str, char character, int count) {
+        int indexOfChar = str.indexOf(character, 0);
+        if (count <= 0) {
+            return indexOfChar;
+        }
 
         while (true) {
-            --a2;
-            if (var10000 <= 0 || var3 == -1) {
-                return var3;
+            if (--count <= 0 || indexOfChar == -1) {
+                return indexOfChar;
             }
 
-            var3 = a.indexOf(a1, var3 + 1);
-            var10000 = a2;
+            indexOfChar = str.indexOf(character, indexOfChar + 1);
         }
     }
-
 
     public static int getOverallPrice(final int a) throws IOException {
         return getGEPrice(a, "overall");
     }
+
 }

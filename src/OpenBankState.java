@@ -5,15 +5,19 @@ public class OpenBankState extends State {
     }
 
     @Override
-    public boolean execute() throws InterruptedException {
-        final boolean b = true;
-        this.core.bank.open();
-        return b;
+    public String textual() {
+        return "Opening Bank";
     }
 
     @Override
     public boolean readyForExecution() throws InterruptedException {
-        return Constants.BANK_AREA.contains(this.core.myPlayer()) && !this.core.bank.isOpen() && !this.core.inventory.contains("Jug");
+        return Constants.BANK_AREA.contains(core.myPlayer()) && !core.bank.isOpen() && !core.inventory.contains("Jug");
+    }
+
+    @Override
+    public boolean execute() throws InterruptedException {
+        core.bank.open();
+        return true;
     }
 
     @Override
@@ -21,8 +25,4 @@ public class OpenBankState extends State {
         return 10L;
     }
 
-    @Override
-    public String textual() {
-        return "Opening Bank";
-    }
 }

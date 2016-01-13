@@ -1,7 +1,7 @@
 public abstract class State {
     public Core core;
 
-    public State(final Core a) {
+    public State(Core a) {
         this.core = a;
     }
 

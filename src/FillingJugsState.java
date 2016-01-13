@@ -5,32 +5,32 @@ public class FillingJugsState extends State {
     }
 
     @Override
-    public boolean readyForExecution() throws InterruptedException {
-        return this.core.isFillingJugs && this.core.inventory.contains("Jug") && Constants.FOUNTAIN_AREA.contains(this.core.myPlayer()) && System.currentTimeMillis() - this.core.lastInteractTime < 20000L;
-    }
-
-    @Override
     public String textual() {
         return "Filling Jugs";
     }
 
     @Override
-    public long getDebugTimeout() throws InterruptedException {
-        return 40L;
+    public boolean readyForExecution() throws InterruptedException {
+        return core.isFillingJugs && core.inventory.contains("Jug") && Constants.FOUNTAIN_AREA.contains(core.myPlayer()) && System.currentTimeMillis() - core.lastInteractTime < 20000L;
     }
 
     @Override
     public boolean execute() throws InterruptedException {
-        if (this.core.lastFilledAmount != this.core.inventory.getAmount("Jug of water")) {
-            this.core.lastFilledTime = System.currentTimeMillis();
+        if (core.lastFilledAmount != core.inventory.getAmount("Jug of water")) {
+            core.lastFilledTime = System.currentTimeMillis();
         }
 
-        this.core.lastFilledAmount = this.core.inventory.getAmount("Jug of water");
-        if (System.currentTimeMillis() - this.core.lastFilledTime > 3500L) {
-            this.core.isFillingJugs = false;
+        core.lastFilledAmount = core.inventory.getAmount("Jug of water");
+        if (System.currentTimeMillis() - core.lastFilledTime > 3500L) {
+            core.isFillingJugs = false;
         }
 
         return true;
+    }
+
+    @Override
+    public long getDebugTimeout() throws InterruptedException {
+        return 40L;
     }
 
 }

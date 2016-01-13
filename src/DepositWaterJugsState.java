@@ -5,24 +5,24 @@ public class DepositWaterJugsState extends State {
     }
 
     @Override
-    public long getDebugTimeout() throws InterruptedException {
-        return 10L;
-    }
-
-    @Override
     public String textual() {
         return "Depositing Items";
     }
 
     @Override
     public boolean readyForExecution() throws InterruptedException {
-        return this.core.bank.isOpen() && this.core.inventory.contains("Jug of water");
+        return core.bank.isOpen() && core.inventory.contains("Jug of water");
     }
 
     @Override
     public boolean execute() throws InterruptedException {
-        this.core.bank.depositAll();
+        core.bank.depositAll();
         return true;
+    }
+
+    @Override
+    public long getDebugTimeout() throws InterruptedException {
+        return 10L;
     }
 
 }
